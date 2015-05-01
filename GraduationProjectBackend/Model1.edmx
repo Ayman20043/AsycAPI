@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GP.dbo.DangerList' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="DangerList">
+          <Property Name="UserID" Type="int" />
+          <Property Name="FriendID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="350" />
+          <Property Name="Phone" Type="varchar" MaxLength="15" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GP.dbo.Friend' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Friend">
+          <Property Name="UserID" Type="int" />
+          <Property Name="FriendID" Type="int" />
+          <Property Name="RealTimeTrack" Type="bit" />
+        </EntityType>-->
+        <EntityType Name="FriendRequest">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderID" Type="int" />
+          <Property Name="RecieverID" Type="int" />
+          <Property Name="State" Type="bit" />
+          <Property Name="RequestDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RealTimeTrackRequest">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="FriendID" Type="int" />
+          <Property Name="RequestDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="400" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="nchar" MaxLength="20" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+          <Property Name="LoggedIn" Type="bit" />
+          <Property Name="ProfilePicture" Type="varchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+error 6004: The table 'GP.dbo.DangerList' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_DangerList_User" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'GP.dbo.DangerList' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_DangerList_User1" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'GP.dbo.Friend' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_Friend_User" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'GP.dbo.Friend' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_Friend_User1" />-->
+        <Association Name="FK_FriendRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="FriendRequest" Type="Self.FriendRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FriendRequest_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="FriendRequest" Type="Self.FriendRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="RecieverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealTimeTrackRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RealTimeTrackRequest" Type="Self.RealTimeTrackRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RealTimeTrackRequest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealTimeTrackRequest_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RealTimeTrackRequest" Type="Self.RealTimeTrackRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RealTimeTrackRequest">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GPModelStoreContainer">
+          <EntitySet Name="FriendRequest" EntityType="Self.FriendRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RealTimeTrackRequest" EntityType="Self.RealTimeTrackRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FriendRequest_User" Association="Self.FK_FriendRequest_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="FriendRequest" EntitySet="FriendRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FriendRequest_User1" Association="Self.FK_FriendRequest_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="FriendRequest" EntitySet="FriendRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealTimeTrackRequest_User" Association="Self.FK_RealTimeTrackRequest_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="RealTimeTrackRequest" EntitySet="RealTimeTrackRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealTimeTrackRequest_User1" Association="Self.FK_RealTimeTrackRequest_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="RealTimeTrackRequest" EntitySet="RealTimeTrackRequest" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FriendRequest">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="Int32" />
+          <Property Name="RecieverID" Type="Int32" />
+          <Property Name="State" Type="Boolean" />
+          <Property Name="RequestDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_FriendRequest_User" FromRole="FriendRequest" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_FriendRequest_User1" FromRole="FriendRequest" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RealTimeTrackRequest">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="FriendID" Type="Int32" />
+          <Property Name="RequestDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_RealTimeTrackRequest_User" FromRole="RealTimeTrackRequest" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_RealTimeTrackRequest_User1" FromRole="RealTimeTrackRequest" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LoggedIn" Type="Boolean" />
+          <Property Name="ProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FriendRequests" Relationship="Self.FK_FriendRequest_User" FromRole="User" ToRole="FriendRequest" />
+          <NavigationProperty Name="FriendRequests1" Relationship="Self.FK_FriendRequest_User1" FromRole="User" ToRole="FriendRequest" />
+          <NavigationProperty Name="RealTimeTrackRequests" Relationship="Self.FK_RealTimeTrackRequest_User" FromRole="User" ToRole="RealTimeTrackRequest" />
+          <NavigationProperty Name="RealTimeTrackRequests1" Relationship="Self.FK_RealTimeTrackRequest_User1" FromRole="User" ToRole="RealTimeTrackRequest" />
+        </EntityType>
+        <Association Name="FK_FriendRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="FriendRequest" Type="Self.FriendRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FriendRequest_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="FriendRequest" Type="Self.FriendRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FriendRequest">
+              <PropertyRef Name="RecieverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealTimeTrackRequest_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RealTimeTrackRequest" Type="Self.RealTimeTrackRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RealTimeTrackRequest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealTimeTrackRequest_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="RealTimeTrackRequest" Type="Self.RealTimeTrackRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RealTimeTrackRequest">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FriendRequests" EntityType="Self.FriendRequest" />
+          <EntitySet Name="RealTimeTrackRequests" EntityType="Self.RealTimeTrackRequest" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_FriendRequest_User" Association="Self.FK_FriendRequest_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FriendRequest" EntitySet="FriendRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FriendRequest_User1" Association="Self.FK_FriendRequest_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FriendRequest" EntitySet="FriendRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealTimeTrackRequest_User" Association="Self.FK_RealTimeTrackRequest_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="RealTimeTrackRequest" EntitySet="RealTimeTrackRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealTimeTrackRequest_User1" Association="Self.FK_RealTimeTrackRequest_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="RealTimeTrackRequest" EntitySet="RealTimeTrackRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GPModelStoreContainer" CdmEntityContainer="GPEntities">
+          <EntitySetMapping Name="FriendRequests">
+            <EntityTypeMapping TypeName="GPModel.FriendRequest">
+              <MappingFragment StoreEntitySet="FriendRequest">
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="RecieverID" ColumnName="RecieverID" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RealTimeTrackRequests">
+            <EntityTypeMapping TypeName="GPModel.RealTimeTrackRequest">
+              <MappingFragment StoreEntitySet="RealTimeTrackRequest">
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FriendID" ColumnName="FriendID" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GPModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LoggedIn" ColumnName="LoggedIn" />
+                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
