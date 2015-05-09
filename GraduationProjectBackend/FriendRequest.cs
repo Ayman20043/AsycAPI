@@ -20,7 +20,7 @@ namespace GraduationProjectBackend
         public Nullable<bool> State { get; set; }
         public Nullable<System.DateTime> RequestDate { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual User Sender { get; set; }
+        public virtual User Reciever { get; set; }
     }
 }

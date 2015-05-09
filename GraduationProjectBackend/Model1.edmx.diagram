@@ -4,14 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a3175da9258d4a71b22d903e5f85a1da" Name="Diagram1">
-        <EntityTypeShape EntityType="GPModel.FriendRequest" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GPModel.RealTimeTrackRequest" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GPModel.User" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+      <Diagram DiagramId="a3175da9258d4a71b22d903e5f85a1da" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="GPModel.FriendRequest" Width="1.5" PointX="4.625" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GPModel.RealTimeTrackRequest" Width="1.5" PointX="4.625" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GPModel.User" Width="1.75" PointX="1" PointY="2" IsExpanded="true" />
         <AssociationConnector Association="GPModel.FK_FriendRequest_User" ManuallyRouted="false" />
         <AssociationConnector Association="GPModel.FK_FriendRequest_User1" ManuallyRouted="false" />
         <AssociationConnector Association="GPModel.FK_RealTimeTrackRequest_User" ManuallyRouted="false" />
         <AssociationConnector Association="GPModel.FK_RealTimeTrackRequest_User1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GPModel.DangerList" Width="2.375" PointX="5.5" PointY="6.875" />
+        <AssociationConnector Association="GPModel.FK_DangerList_User1" />
+        <AssociationConnector Association="GPModel.FK_DangerList_User4" />
+        <EntityTypeShape EntityType="GPModel.Friend" Width="1.5" PointX="3" PointY="8" />
+        <AssociationConnector Association="GPModel.FK_Friend_User2" />
+        <AssociationConnector Association="GPModel.FK_Friend_User3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

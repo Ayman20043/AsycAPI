@@ -12,14 +12,14 @@ namespace GraduationProjectBackend
     using System;
     using System.Collections.Generic;
     
-    public partial class RealTimeTrackRequest
+    public partial class Friend
     {
-        public int RequestID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> FriendID { get; set; }
-        public Nullable<System.DateTime> RequestDate { get; set; }
+        public int FrinedshipID { get; set; }
+        public int InitatiorUserID { get; set; }
+        public Nullable<bool> RealTimeTrack { get; set; }
+        public int RecieverUserID { get; set; }
     
-        public virtual User Sender { get; set; }
-        public virtual User Reciever { get; set; }
+        public virtual User InitiatorUID { get; set; }
+        public virtual User RecieverUID { get; set; }
     }
 }

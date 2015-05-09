@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Learning\FCI\4th\2nd\Gard Poj\BackEnd\GraduationProjectBackend\GraduationProjectBackend\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\Learning\FCI\4th\2nd\Gard Poj\BackEnd\5\1\GraduationProjectBackend\GraduationProjectBackend\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

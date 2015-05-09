@@ -16,10 +16,14 @@ namespace GraduationProjectBackend
     {
         public User()
         {
-            this.FriendRequests = new HashSet<FriendRequest>();
-            this.FriendRequests1 = new HashSet<FriendRequest>();
-            this.RealTimeTrackRequests = new HashSet<RealTimeTrackRequest>();
-            this.RealTimeTrackRequests1 = new HashSet<RealTimeTrackRequest>();
+            this.FriendRequestsSent = new HashSet<FriendRequest>();
+            this.FriendRequestsReceived = new HashSet<FriendRequest>();
+            this.RealTimeTrackRequestsSent = new HashSet<RealTimeTrackRequest>();
+            this.RealTimeTrackRequestsRecieved = new HashSet<RealTimeTrackRequest>();
+            this.DangerList = new HashSet<DangerList>();
+            this.DangerListMembers = new HashSet<DangerList>();
+            this.FriendsIntiated = new HashSet<Friend>();
+            this.FriendsRecieved = new HashSet<Friend>();
         }
     
         public int UserID { get; set; }
@@ -30,9 +34,13 @@ namespace GraduationProjectBackend
         public Nullable<bool> LoggedIn { get; set; }
         public string ProfilePicture { get; set; }
     
-        public virtual ICollection<FriendRequest> FriendRequests { get; set; }
-        public virtual ICollection<FriendRequest> FriendRequests1 { get; set; }
-        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequests { get; set; }
-        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequests1 { get; set; }
+        public virtual ICollection<FriendRequest> FriendRequestsSent { get; set; }
+        public virtual ICollection<FriendRequest> FriendRequestsReceived { get; set; }
+        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestsSent { get; set; }
+        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestsRecieved { get; set; }
+        public virtual ICollection<DangerList> DangerList { get; set; }
+        public virtual ICollection<DangerList> DangerListMembers { get; set; }
+        public virtual ICollection<Friend> FriendsIntiated { get; set; }
+        public virtual ICollection<Friend> FriendsRecieved { get; set; }
     }
 }
