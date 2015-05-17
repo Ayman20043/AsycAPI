@@ -374,7 +374,8 @@
         </EntityType>
         <Association Name="FK_Friend_User2">
           <End Type="GPModel.User" Role="User" Multiplicity="1" />
-          <End Type="GPModel.Friend" Role="Friend" Multiplicity="*" />
+          <End Type="GPModel.Friend" Role="Friend" Multiplicity="*" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
@@ -386,7 +387,8 @@
         </Association>
         <Association Name="FK_Friend_User3">
           <End Type="GPModel.User" Role="User" Multiplicity="1" />
-          <End Type="GPModel.Friend" Role="Friend" Multiplicity="*" />
+          <End Type="GPModel.Friend" Role="Friend" Multiplicity="*" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
