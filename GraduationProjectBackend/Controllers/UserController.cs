@@ -44,7 +44,7 @@ namespace GraduationProjectBackend.Controllers
                     await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK, user);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
@@ -231,6 +231,32 @@ namespace GraduationProjectBackend.Controllers
                     //user.Name = Name;
                     //await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+        [HttpGet]
+        [Route("api/User/GetUserByID")]
+        public async Task<HttpResponseMessage> GetUserByID([FromUri] int UserID)
+        {
+            try
+            {
+                User user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+                if (user != null)
+                {
+                    //user.Name = Name;
+                    //await db.SaveChangesAsync();
+                    UserModel Result = new UserModel() {Name=user.Name,UserID=user.UserID,Email=user.Email,Phone=user.Phone,ProfilePicture=user.ProfilePicture };
+                    return Request.CreateResponse(HttpStatusCode.OK,Result);
                 }
                 else
                 {

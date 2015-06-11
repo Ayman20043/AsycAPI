@@ -18,12 +18,12 @@ namespace GraduationProjectBackend
         {
             this.FriendRequestsSent = new HashSet<FriendRequest>();
             this.FriendRequestsReceived = new HashSet<FriendRequest>();
-            this.RealTimeTrackRequestsSent = new HashSet<RealTimeTrackRequest>();
-            this.RealTimeTrackRequestsRecieved = new HashSet<RealTimeTrackRequest>();
             this.DangerList = new HashSet<DangerList>();
             this.DangerListMembers = new HashSet<DangerList>();
             this.FriendsIntiated = new HashSet<Friend>();
             this.FriendsRecieved = new HashSet<Friend>();
+            this.RealTimeTrackRequestSent = new HashSet<RealTimeTrackRequest>();
+            this.RealTimeTrackRequestRecieved = new HashSet<RealTimeTrackRequest>();
         }
     
         public int UserID { get; set; }
@@ -36,11 +36,11 @@ namespace GraduationProjectBackend
     
         public virtual ICollection<FriendRequest> FriendRequestsSent { get; set; }
         public virtual ICollection<FriendRequest> FriendRequestsReceived { get; set; }
-        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestsSent { get; set; }
-        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestsRecieved { get; set; }
         public virtual ICollection<DangerList> DangerList { get; set; }
         public virtual ICollection<DangerList> DangerListMembers { get; set; }
         public virtual ICollection<Friend> FriendsIntiated { get; set; }
         public virtual ICollection<Friend> FriendsRecieved { get; set; }
+        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestSent { get; set; }
+        public virtual ICollection<RealTimeTrackRequest> RealTimeTrackRequestRecieved { get; set; }
     }
 }

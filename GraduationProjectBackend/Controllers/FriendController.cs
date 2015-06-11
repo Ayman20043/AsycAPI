@@ -381,5 +381,98 @@ namespace GraduationProjectBackend.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        [HttpPost]
+        [Route("api/Friend/SendRealTimeRequest")]
+        public async Task<HttpResponseMessage> SendRealTimeRequest([FromUri] int UserID, [FromBody] int FriendID)
+        {
+            var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+            var Friend = await db.Users.Where(u => u.UserID == FriendID).FirstAsync();
+            if (user != null)
+            {
+                try
+                {
+                    user.RealTimeTrackRequestSent.Add(new RealTimeTrackRequest() { UserID = UserID, User = user, State = null, RequestDate = DateTime.Now, FriendID = FriendID, Friend = Friend });
+                    await db.SaveChangesAsync();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (Exception)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Friend/AcceptRealTimeRequest")]
+        public async Task<HttpResponseMessage> AcceptRealTimeRequest([FromUri] int UserID, [FromBody] int RealTimeRequestID)
+        {
+            var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+            var RealTimeRequest = await db.RealTimeTrackRequests.Where(u => u.RequestID == RealTimeRequestID).FirstAsync();
+            var Friend = RealTimeRequest.Friend;
+            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.UserID == UserID)
+            {
+                try
+                {
+                    RealTimeRequest.State = true;
+                    if (user.FriendsIntiated.Where(f=>f.RecieverUserID==Friend.UserID).SingleOrDefault()!=null)
+                    {
+                        user.FriendsIntiated.Where(f => f.RecieverUserID == Friend.UserID).SingleOrDefault().RealTimeTrack = true;
+                    }
+                    else
+                        if(user.FriendsRecieved.Where(f=>f.InitatiorUserID==Friend.UserID).SingleOrDefault()!=null)
+                        {
+                        user.FriendsRecieved.Where(f=>f.InitatiorUserID==Friend.UserID).SingleOrDefault().RealTimeTrack=true;
+                        }
+
+                    await db.SaveChangesAsync();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (Exception)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Friend/RejectRealTimeRequest")]
+        public async Task<HttpResponseMessage> RejectRealTimeRequest([FromUri] int UserID, [FromBody] int RealTimeRequestID)
+        {
+            var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+            var RealTimeRequest = await db.RealTimeTrackRequests.Where(u => u.RequestID == RealTimeRequestID).FirstAsync();
+            var Friend = RealTimeRequest.Friend;
+            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.UserID == UserID)
+            {
+                try
+                {
+                    RealTimeRequest.State = false;
+
+                    await db.SaveChangesAsync();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (Exception)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+        //[HttpPost]
+        //[Route("api/Friend/RemoveRealTime")]
     }
 }

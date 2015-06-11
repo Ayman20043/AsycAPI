@@ -26,9 +26,9 @@ namespace GraduationProjectBackend
         }
     
         public virtual DbSet<FriendRequest> FriendRequests { get; set; }
-        public virtual DbSet<RealTimeTrackRequest> RealTimeTrackRequests { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<DangerList> DangerLists { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
+        public virtual DbSet<RealTimeTrackRequest> RealTimeTrackRequests { get; set; }
     }
 }

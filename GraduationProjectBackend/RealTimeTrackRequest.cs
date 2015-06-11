@@ -18,8 +18,9 @@ namespace GraduationProjectBackend
         public Nullable<int> UserID { get; set; }
         public Nullable<int> FriendID { get; set; }
         public Nullable<System.DateTime> RequestDate { get; set; }
+        public Nullable<bool> State { get; set; }
     
-        public virtual User Sender { get; set; }
-        public virtual User Reciever { get; set; }
+        public virtual User User { get; set; }
+        public virtual User Friend { get; set; }
     }
 }
