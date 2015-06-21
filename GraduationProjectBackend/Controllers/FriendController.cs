@@ -472,7 +472,41 @@ namespace GraduationProjectBackend.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
-        //[HttpPost]
-        //[Route("api/Friend/RemoveRealTime")]
+
+        [HttpPost]
+        [Route("api/Friend/RemoveRealTime")]
+        public async Task<HttpResponseMessage> RemoveRealTimeTrack([FromUri] int UserID,[FromBody] int friendID) 
+        {
+            var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+            FriendModel friend = await FriendHelper.GetFriendByID(UserID,friendID);
+            if (user != null &&friend!=null )
+            {
+                try
+                {
+                   
+                    if (user.FriendsIntiated.Where(f => f.RecieverUserID ==friend.UserID ).SingleOrDefault() != null)
+                    {
+                        user.FriendsIntiated.Where(f => f.RecieverUserID == friend.UserID).SingleOrDefault().RealTimeTrack = false;
+                    }
+                    else
+                        if (user.FriendsRecieved.Where(f => f.InitatiorUserID == friend.UserID).SingleOrDefault() != null)
+                        {
+                            user.FriendsRecieved.Where(f => f.InitatiorUserID == friend.UserID).SingleOrDefault().RealTimeTrack = false;
+                        }
+
+                    await db.SaveChangesAsync();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (Exception)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }
