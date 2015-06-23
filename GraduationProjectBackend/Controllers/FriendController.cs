@@ -24,15 +24,26 @@ namespace GraduationProjectBackend.Controllers
                 if (value.FriendsIntiated != null)
                     foreach (var item in value.FriendsIntiated)
                     {
-                        all.Add(new FriendModel()
+                        var f=new FriendModel()
                         {
                             Name = item.RecieverUID.Name,
                             Email = item.RecieverUID.Email,
                             LoggedIn = item.RecieverUID.LoggedIn,
                             Phone = item.RecieverUID.Phone,
                             ProfilePicture = item.RecieverUID.ProfilePicture,
-                            UserID = item.RecieverUID.UserID
-                        });
+                            UserID = item.RecieverUID.UserID,
+                        };
+
+                        //all.Add(new FriendModel()
+                        //{
+                        //    Name = item.RecieverUID.Name,
+                        //    Email = item.RecieverUID.Email,
+                        //    LoggedIn = item.RecieverUID.LoggedIn,
+                        //    Phone = item.RecieverUID.Phone,
+                        //    ProfilePicture = item.RecieverUID.ProfilePicture,
+                        //    UserID = item.RecieverUID.UserID,
+                        //    RealTimeTrack=item.RealTimeTrack
+                        //});
                     }
                 if (value.FriendsRecieved != null)
                     foreach (var item in value.FriendsRecieved)
@@ -44,7 +55,8 @@ namespace GraduationProjectBackend.Controllers
                             LoggedIn = item.InitiatorUID.LoggedIn,
                             Phone = item.InitiatorUID.Phone,
                             ProfilePicture = item.InitiatorUID.ProfilePicture,
-                            UserID = item.InitiatorUID.UserID
+                            UserID = item.InitiatorUID.UserID,
+                            RealTimeTrack = item.RealTimeTrack
                         });
                     }
 
@@ -76,7 +88,8 @@ namespace GraduationProjectBackend.Controllers
                             LoggedIn = item.RecieverUID.LoggedIn,
                             Phone = item.RecieverUID.Phone,
                             ProfilePicture = item.RecieverUID.ProfilePicture,
-                            UserID = item.RecieverUID.UserID
+                            UserID = item.RecieverUID.UserID,
+                            RealTimeTrack = item.RealTimeTrack
                         });
                     }
                 if (value.FriendsRecieved != null)
@@ -89,7 +102,8 @@ namespace GraduationProjectBackend.Controllers
                             LoggedIn = item.InitiatorUID.LoggedIn,
                             Phone = item.InitiatorUID.Phone,
                             ProfilePicture = item.InitiatorUID.ProfilePicture,
-                            UserID = item.InitiatorUID.UserID
+                            UserID = item.InitiatorUID.UserID,
+                            RealTimeTrack = item.RealTimeTrack
                         });
                     }
                 var friend = all.Where(f => f.UserID ==FriendID).FirstOrDefault();
@@ -119,7 +133,8 @@ namespace GraduationProjectBackend.Controllers
                             LoggedIn = item.RecieverUID.LoggedIn,
                             Phone = item.RecieverUID.Phone,
                             ProfilePicture = item.RecieverUID.ProfilePicture,
-                            UserID = item.RecieverUID.UserID
+                            UserID = item.RecieverUID.UserID,
+                            RealTimeTrack = item.RealTimeTrack
                         });
                     }
                 if (value.FriendsRecieved != null)
@@ -132,7 +147,8 @@ namespace GraduationProjectBackend.Controllers
                             LoggedIn = item.InitiatorUID.LoggedIn,
                             Phone = item.InitiatorUID.Phone,
                             ProfilePicture = item.InitiatorUID.ProfilePicture,
-                            UserID = item.InitiatorUID.UserID
+                            UserID = item.InitiatorUID.UserID,
+                            RealTimeTrack = item.RealTimeTrack
                         });
                     }
                 var friend = all.Where(f => f.Name == FriendName).FirstOrDefault();
@@ -396,7 +412,7 @@ namespace GraduationProjectBackend.Controllers
                     await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -415,7 +431,7 @@ namespace GraduationProjectBackend.Controllers
             var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
             var RealTimeRequest = await db.RealTimeTrackRequests.Where(u => u.RequestID == RealTimeRequestID).FirstAsync();
             var Friend = RealTimeRequest.Friend;
-            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.UserID == UserID)
+            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.FriendID == Friend.UserID)
             {
                 try
                 {
@@ -433,7 +449,7 @@ namespace GraduationProjectBackend.Controllers
                     await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -452,7 +468,7 @@ namespace GraduationProjectBackend.Controllers
             var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
             var RealTimeRequest = await db.RealTimeTrackRequests.Where(u => u.RequestID == RealTimeRequestID).FirstAsync();
             var Friend = RealTimeRequest.Friend;
-            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.UserID == UserID)
+            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.FriendID == UserID)
             {
                 try
                 {
@@ -496,6 +512,36 @@ namespace GraduationProjectBackend.Controllers
 
                     await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch (Exception)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Friend/GetAllRealTimeRequests")]
+        public async Task<HttpResponseMessage> GetAllRealTimeRequests([FromUri] int UserID)
+        {
+            var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
+            if (user != null)
+            {
+                try
+                {
+                    List<FriendRequsetModel> final = new List<FriendRequsetModel>();
+                 //   var reqs = await db.FriendRequests.Where(r => r.RecieverID == user.UserID && r.State == null).ToListAsync();
+                    var reqs = await db.RealTimeTrackRequests.Where(r => r.FriendID == UserID && r.State == null).ToListAsync();
+                    foreach (var item in reqs)
+                    {
+                        final.Add(new FriendRequsetModel() { SenderID = item.UserID, RequestDate = item.RequestDate, RequestId = item.RequestID, State = item.State });
+                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, final);
                 }
                 catch (Exception)
                 {

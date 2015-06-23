@@ -28,11 +28,11 @@ namespace GraduationProjectBackend.Controllers
                     {
                         if (item.MemberUserID != null)
                         {
-                            all.Add(new DangerListMemberModel() { Name = item.Name, Phone = item.Phone, Picture = allFriends.Where(f => f.UserID == item.MemberUserID).SingleOrDefault().ProfilePicture });
+                            all.Add(new DangerListMemberModel() {MemberID=item.MemberID,UserID=item.UserID,MemberUserID=item.MemberUserID, Name = item.Name, Phone = item.Phone, Picture = allFriends.Where(f => f.UserID == item.MemberUserID).SingleOrDefault().ProfilePicture });
                         }
                         else
                         {
-                            all.Add(new DangerListMemberModel() { Name = item.Name, Phone = item.Phone, Picture = null });
+                            all.Add(new DangerListMemberModel() {MemberID=item.MemberID,UserID=item.UserID, Name = item.Name, Phone = item.Phone, Picture = null });
                         }
 
                     }
@@ -58,7 +58,13 @@ namespace GraduationProjectBackend.Controllers
                {
                    try
                    {
-                       user.DangerList.Add(new DangerList() {UserID=UserID,Name=DangerListMember.Name,Phone=DangerListMember.Phone,MemberUserID=DangerListMember.MemberUserID });
+                       if (DangerListMember.MemberUserID!=null)
+                       {
+                            user.DangerList.Add(new DangerList() {UserID=UserID,Name=DangerListMember.Name,Phone=DangerListMember.Phone,MemberUserID=DangerListMember.MemberUserID });
+                       }
+                       else
+                       user.DangerList.Add(new DangerList() {UserID=UserID,Name=DangerListMember.Name,Phone=DangerListMember.Phone});
+                     await db.SaveChangesAsync();
                        return Request.CreateResponse(HttpStatusCode.OK);
                    }
                    catch (Exception)

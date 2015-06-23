@@ -13,5 +13,6 @@ namespace GraduationProjectBackend
         public string Phone { get; set; }
         public Nullable<bool> LoggedIn { get; set; }
         public string ProfilePicture { get; set; }
+        public Nullable<bool> RealTimeTrack { get; set; }
     }
 }

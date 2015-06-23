@@ -255,7 +255,7 @@ namespace GraduationProjectBackend.Controllers
                 {
                     //user.Name = Name;
                     //await db.SaveChangesAsync();
-                    UserModel Result = new UserModel() {Name=user.Name,UserID=user.UserID,Email=user.Email,Phone=user.Phone,ProfilePicture=user.ProfilePicture };
+                    UserModel Result = new UserModel() {Name=user.Name,UserID=user.UserID,Email=user.Email,Phone=user.Phone,ProfilePicture=user.ProfilePicture,Password=user.Password };
                     return Request.CreateResponse(HttpStatusCode.OK,Result);
                 }
                 else
