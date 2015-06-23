@@ -430,22 +430,40 @@ namespace GraduationProjectBackend.Controllers
         {
             var user = await db.Users.Where(u => u.UserID == UserID).FirstAsync();
             var RealTimeRequest = await db.RealTimeTrackRequests.Where(u => u.RequestID == RealTimeRequestID).FirstAsync();
-            var Friend = RealTimeRequest.Friend;
-            if (user != null && RealTimeRequest != null && Friend != null && RealTimeRequest.FriendID == Friend.UserID)
+            var Friend = (RealTimeRequest.Friend.UserID == UserID) ? RealTimeRequest.User : RealTimeRequest.Friend;
+            if (user != null && RealTimeRequest != null && Friend != null )
             {
                 try
                 {
-                    RealTimeRequest.State = true;
-                    if (user.FriendsIntiated.Where(f=>f.RecieverUserID==Friend.UserID).SingleOrDefault()!=null)
+                   
+                    if (user.FriendsIntiated.Where(f => f.RecieverUserID == Friend.UserID).SingleOrDefault() != null)
                     {
+                        RealTimeRequest.State = true;
                         user.FriendsIntiated.Where(f => f.RecieverUserID == Friend.UserID).SingleOrDefault().RealTimeTrack = true;
                     }
                     else
-                        if(user.FriendsRecieved.Where(f=>f.InitatiorUserID==Friend.UserID).SingleOrDefault()!=null)
+                        if (user.FriendsRecieved.Where(f => f.InitatiorUserID == Friend.UserID).SingleOrDefault() != null)
                         {
-                        user.FriendsRecieved.Where(f=>f.InitatiorUserID==Friend.UserID).SingleOrDefault().RealTimeTrack=true;
+                            RealTimeRequest.State = true;
+                            user.FriendsRecieved.Where(f => f.InitatiorUserID == Friend.UserID).SingleOrDefault().RealTimeTrack = true;
                         }
+                    //if (user.FriendsIntiated != null)
+                    //{
+                    //    foreach (var item in user.FriendsIntiated)
+                    //    {
+                    //        if (item.InitatiorUserID == Friend.UserID)
+                    //            item.RealTimeTrack = true;
 
+                    //    }
+                    //}
+                    //if (user.FriendsRecieved != null)
+                    //{
+                    //    foreach (var item in user.FriendsRecieved)
+                    //    {
+                    //        if (item.RecieverUserID == Friend.UserID)
+                    //            item.RealTimeTrack = true;
+                    //    }
+                    //}
                     await db.SaveChangesAsync();
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
